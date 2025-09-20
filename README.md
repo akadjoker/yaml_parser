@@ -1,12 +1,10 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
+
 
 # YAML Parser C++11
 
 A lightweight, single-header YAML parser and serializer for C++11 with comprehensive feature support and robust error handling.
 
-[
-[
-[
+
 
 ## Features
 
@@ -28,16 +26,19 @@ A lightweight, single-header YAML parser and serializer for C++11 with comprehen
 
 Simply copy `yaml.hpp` and `yaml.cpp` to your project directory.
 
+Or 
+
 ```cpp
-#define YAML_IMPLEMENTATION  // Define this in exactly one .cpp file
-#include "yaml.hpp"
+#define YAML_IMPLEMENTATION   
+#include "yaml_single.hpp"
 ```
 
 
 ### Basic Usage
 
 ```cpp
-#include "yaml.hpp"
+#define YAML_IMPLEMENTATION   
+#include "yaml_single.hpp"
 #include <iostream>
 
 int main() {
@@ -150,7 +151,7 @@ yaml::YamlValue yaml::parse(const std::string& yaml_text);
 
 ## Testing
 
-The library includes comprehensive tests covering 29 different scenarios:
+The library includes comprehensive tests covering  different scenarios:
 
 ```bash
 # Compile and run tests

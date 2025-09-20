@@ -11,8 +11,8 @@ EXAMPLE_EXEC = example_yaml
 
 # Source files
 TEST_SRC = test_yaml.cpp yaml.cpp
-EXAMPLE_SRC = test_yaml.cpp yaml.cpp
-HEADER =  
+EXAMPLE_SRC = example_yaml.cpp  
+  
 
 # Default target
 .PHONY: all test debug release clean install example help
@@ -24,7 +24,7 @@ test: $(TEST_EXEC)
 	@echo "=== Running Tests ==="
 	./$(TEST_EXEC)
 
-$(TEST_EXEC): $(TEST_SRC) $(HEADER)
+$(TEST_EXEC): $(TEST_SRC)  
 	$(CXX) $(CXXFLAGS) $(TEST_SRC) -o $(TEST_EXEC)
 
 # Debug build with sanitizers
@@ -44,6 +44,7 @@ example: $(EXAMPLE_EXEC)
 
 $(EXAMPLE_EXEC): $(EXAMPLE_SRC) $(HEADER)
 	$(CXX) $(CXXFLAGS) $(EXAMPLE_SRC) -o $(EXAMPLE_EXEC)
+	./$(EXAMPLE_EXEC)
 
 # Validation targets
 validate: $(HEADER)
