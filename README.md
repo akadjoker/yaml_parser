@@ -35,40 +35,7 @@ Or
 ```
 
 
-### Basic Usage 1
-
-```cpp
-#define YAML_IMPLEMENTATION   
-#include "yaml_single.hpp"
-#include <iostream>
-
-int main() {
-    // Parse YAML string
-    std::string yaml_text = R"(
-        name: John Doe
-        age: 30
-        address: 123 Main Street
-        hobbies:
-          - reading
-          - coding
-          - gaming
-    )";
-    
-    yaml::YamlValue root = yaml::parse(yaml_text);
-    
-    // Access values
-    std::cout << "Name: " << root["name"].asString() << std::endl;
-    std::cout << "Age: " << root["age"].asInt() << std::endl;
-    std::cout << "First hobby: " << root["hobbies"][^0].asString() << std::endl;
-    
-    // Serialize back to YAML
-    std::cout << "Serialized:\n" << root.serialize() << std::endl;
-    
-    return 0;
-}
-```
-
-### Basic Usage 2
+### Basic Usage 
 
 ```cpp
 #include "yaml.hpp"
