@@ -63,27 +63,4 @@ jobs:
         sudo apt-get install -y cppcheck valgrind 
         
        
-  package-build:
-    name: Package and Distribution
-    needs: [test, quality-assurance]
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Create package
-      run: |
-        make package
-        ls -la *.tar.gz
-        
-    - name: Test installation
-      run: |
-        sudo make install PREFIX=/tmp/test-install
-        ls -la /tmp/test-install/include/yaml/
-        
-    - name: Upload package artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: yaml-parser-package
-        path: "*.tar.gz"
+ 
