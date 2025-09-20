@@ -8,7 +8,7 @@ RELEASE_FLAGS = -std=c++11 -Wall -Wextra -Wpedantic -O3 -DNDEBUG
 PROJECT = yaml_parser
 TEST_EXEC = test_yaml
 EXAMPLE_EXEC = example_yaml
-
+HEADER = yaml_single.hpp
 # Source files
 TEST_SRC = test_yaml.cpp yaml.cpp
 EXAMPLE_SRC = example_yaml.cpp  
