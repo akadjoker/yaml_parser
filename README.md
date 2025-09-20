@@ -8,7 +8,7 @@ A lightweight, single-header YAML parser and serializer for C++11 with comprehen
 
 ## Features
 
-- **Single Header Library** - Easy integration, just include `yaml.hpp`
+- **Single Header Library** - Easy integration, just include `yaml_single.hpp`
 - **C++11 Compatible** - Works with older compilers and embedded systems
 - **Memory Safe** - RAII-based memory management with zero leaks
 - **Comprehensive Type Support** - Strings, numbers, booleans, null, sequences, mappings
@@ -18,7 +18,8 @@ A lightweight, single-header YAML parser and serializer for C++11 with comprehen
 - **Round-trip Serialization** - Parse YAML → modify → serialize back to YAML
 - **Robust Error Handling** - Detailed exception messages with line/column info
 - **Performance Optimized** - Sub-millisecond parsing for typical configurations
-
+- **Error Handling**: Detailed error reporting with line/column information
+- **Serialization**: Convert parsed data back to YAML format
 
 ## Quick Start
 
@@ -115,6 +116,52 @@ bool empty() const;                             // Check if empty
 bool contains(const std::string& key) const;   // Check key exists
 ```
 
+### Dynamic Data Structure
+
+```cpp
+// Create YAML structure programmatically
+yaml::YamlValue root;
+root["name"] = yaml::YamlValue("John Doe");
+root["age"] = yaml::YamlValue(30);
+root["hobbies"] = yaml::YamlValue(yaml::YamlValue::Sequence{
+    yaml::YamlValue("reading"),
+    yaml::YamlValue("coding")
+});
+
+// Serialize to string
+std::string output = root.serialize();
+std::cout << output << std::endl;
+```
+
+### Configuration File
+```yaml
+# config.yaml
+app:
+  name: My Application
+  version: 1.2.0
+  debug: false
+
+database:
+  host: db.example.com
+  port: 5432
+  pool_size: 10
+
+logging:
+  level: info
+  file: /var/log/app.log
+```
+
+```cpp
+std::ifstream file("config.yaml");
+std::string content((std::istreambuf_iterator<char>(file)),
+                    std::istreambuf_iterator<char>());
+
+yaml::YamlValue config = yaml::parse(content);
+
+std::string appName = config["app"]["name"].asString();
+bool debugMode = config["app"]["debug"].asBool();
+int dbPort = config["database"]["port"].asInt();
+```
 
 ### Parsing Functions
 
@@ -240,6 +287,16 @@ MIT License - see LICENSE file for details.
 ## Author
 
 Created with focus on simplicity, performance, and reliability for C++11 projects.
+
+
+## Changelog
+
+### v1.0.0
+- Initial release
+- Core YAML parsing functionality
+- Comprehensive test suite
+- Memory safety validation
+
 
 ***
 
