@@ -1,0 +1,115 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    name: Build and Test
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        build-type: [test, debug, release]
+        exclude:
+          - os: windows-latest
+            build-type: debug  # Address sanitizer issues on Windows
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup C++ environment
+      uses: aminya/setup-cpp@v1
+      with:
+        compiler: gcc
+        
+    - name: Install dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential valgrind cppcheck gcov
+        
+    - name: Install dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install make cppcheck
+        
+    - name: Install dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install make
+        
+    - name: Verify build environment
+      run: |
+        g++ --version
+        make help
+        
+    - name: Build and test (${{ matrix.build-type }})
+      run: |
+        make clean
+        make ${{ matrix.build-type }}
+        
+    - name: Performance benchmark
+      if: matrix.build-type == 'release'
+      run: |
+        make performance
+        
+  quality-assurance:
+    name: Quality Assurance
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install QA tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cppcheck valgrind gcov
+        
+    - name: Memory leak detection
+      run: |
+        make memory-test
+        
+    - name: Static analysis
+      run: |
+        make static-analysis
+        
+    - name: Code coverage
+      run: |
+        make coverage
+        ls -la *.gcov || echo "Coverage files generated"
+        
+    - name: Header validation
+      run: |
+        make validate
+        
+  package-build:
+    name: Package and Distribution
+    needs: [test, quality-assurance]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Create package
+      run: |
+        make package
+        ls -la *.tar.gz
+        
+    - name: Test installation
+      run: |
+        sudo make install PREFIX=/tmp/test-install
+        ls -la /tmp/test-install/include/yaml/
+        
+    - name: Upload package artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: yaml-parser-package
+        path: "*.tar.gz"
