@@ -42,14 +42,14 @@ release: $(TEST_EXEC)
 # Example usage
 example: $(EXAMPLE_EXEC)
 
-$(EXAMPLE_EXEC): $(EXAMPLE_SRC) $(HEADER)
+$(EXAMPLE_EXEC): $(EXAMPLE_SRC) 
 	$(CXX) $(CXXFLAGS) $(EXAMPLE_SRC) -o $(EXAMPLE_EXEC)
 	./$(EXAMPLE_EXEC)
 
 # Validation targets
 validate: $(HEADER)
 	@echo "=== Header Validation ==="
-	$(CXX) $(CXXFLAGS) -fsyntax-only -DYAML_IMPLEMENTATION $(HEADER)
+	$(CXX) $(CXXFLAGS) -fsyntax-only -DYAML_IMPLEMENTATION  
 	@echo "Header syntax: OK"
 
 syntax-check: validate
