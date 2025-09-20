@@ -4,7 +4,7 @@
 
 A lightweight, single-header YAML parser and serializer for C++11 with comprehensive feature support and robust error handling.
 
-[![CI Status](https://github.com/akadjoker/yaml-parser/workflows/C%2B%2B%20CI/badge.svg)](https://github.com/YOUR_USERNAME/yaml-parser-cpp/actions)
+[![CI Status](https://github.com/akadjoker/yaml_parser/workflows/C%2B%2B%20CI/badge.svg)](https://github.com/YOUR_USERNAME/yaml-parser-cpp/actions)
 [![Tests Passing](https://img.shields.io/badge/tests-29%2F29%20passing-brightgreen.svg)](#testing)
 [![Memory Safe](https://img.shields.io/badge/memory-safe-brightgreen.svg)](#memory-safety)
 [![C++11](https://img.shields.io/badge/C%2B%2B-11-blue.svg)](https://isocpp.org/)
