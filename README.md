@@ -35,7 +35,7 @@ Or
 ```
 
 
-### Basic Usage
+### Basic Usage 1
 
 ```cpp
 #define YAML_IMPLEMENTATION   
@@ -68,6 +68,104 @@ int main() {
 }
 ```
 
+### Basic Usage 2
+
+```cpp
+#include "yaml.hpp"
+#include <iostream>
+
+int main() {
+    std::string yamlText = R"(
+        name: John Doe
+        age: 30
+        active: true
+        hobbies:
+          - reading
+          - coding
+          - gaming
+        address:
+          street: 123 Main Street
+          city: New York
+    )";
+    
+    try {
+        yaml::YamlValue root = yaml::parse(yamlText);
+        
+        // Access values
+        std::cout << "Name: " << root["name"].asString() << std::endl;
+        std::cout << "Age: " << root["age"].asInt() << std::endl;
+        std::cout << "Active: " << root["active"].asBool() << std::endl;
+        
+        // Access nested values
+        std::cout << "City: " << root["address"]["city"].asString() << std::endl;
+        
+        // Iterate through sequences
+        for (size_t i = 0; i < root["hobbies"].size(); ++i) {
+            std::cout << "Hobby: " << root["hobbies"][i].asString() << std::endl;
+        }
+        
+    } catch (const yaml::YamlException& e) {
+        std::cerr << "Parse error: " << e.what() << std::endl;
+    }
+    
+    return 0;
+}
+```
+
+### Type Checking and Conversion
+
+```cpp
+yaml::YamlValue value = yaml::parse("count: 42");
+
+// Type checking
+if (value["count"].isNumber()) {
+    std::cout << "It's a number!" << std::endl;
+}
+
+// Type conversion
+int count = value["count"].asInt();
+double countFloat = value["count"].asNumber();
+
+// Safe access with contains()
+if (value.contains("optional_field")) {
+    std::string field = value["optional_field"].asString();
+}
+```
+
+### Working with Complex Structures
+
+```cpp
+std::string config = R"(
+    database:
+      host: localhost
+      port: 5432
+      credentials:
+        username: admin
+        password: secret
+    servers:
+      - name: web-01
+        ip: 192.168.1.10
+      - name: web-02
+        ip: 192.168.1.11
+    features: {ssl: true, debug: false}
+)";
+
+yaml::YamlValue root = yaml::parse(config);
+
+// Access nested mappings
+std::string dbHost = root["database"]["host"].asString();
+int dbPort = root["database"]["port"].asInt();
+
+// Work with sequences
+auto& servers = root["servers"].asSequence();
+for (const auto& server : servers) {
+    std::cout << server["name"].asString() << ": " 
+              << server["ip"].asString() << std::endl;
+}
+
+// Flow syntax
+bool sslEnabled = root["features"]["ssl"].asBool();
+```
 
 ### Compilation
 
