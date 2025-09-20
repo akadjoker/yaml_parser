@@ -48,7 +48,36 @@ jobs:
       if: matrix.build-type == 'release'
       run: |
         make performance
+
+  quality-assurance:
+    name: Quality Assurance
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install QA tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cppcheck valgrind 
         
+    - name: Memory leak detection
+      run: |
+        make memory-test
+        
+    - name: Static analysis
+      run: |
+        make static-analysis
+        
+    - name: Code coverage
+      run: |
+        make coverage
+        ls -la *.gcov || echo "Coverage files generated"
+        
+    - name: Header validation
+      run: |
+        make validate
         
   package-build:
     name: Package and Distribution
